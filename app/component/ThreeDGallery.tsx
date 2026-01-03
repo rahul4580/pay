@@ -2,14 +2,15 @@
 
 import * as THREE from 'three'
 import { useRef, useState, useMemo } from 'react'
-import { Canvas, useFrame, useThree, extend, ThreeElement } from '@react-three/fiber'
+import { Canvas, useFrame, extend, ThreeElement } from '@react-three/fiber'
 import { Image, ScrollControls, useScroll, Float } from '@react-three/drei'
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { easing } from 'maath'
 
 // Custom geometry for the bent look
 class BentPlaneGeometry extends THREE.PlaneGeometry {
-    constructor(radius: number, ...args: any[]) {
-        super(...args)
+    constructor(radius: number, width: number, height: number, widthSegments: number, heightSegments: number) {
+        super(width, height, widthSegments, heightSegments)
         const p = this.parameters
         const hw = p.width / 2
         const a = new THREE.Vector3()
@@ -55,6 +56,7 @@ function Card({ url, ...props }: { url: string;[key: string]: any }) {
             side={THREE.DoubleSide}
             onPointerOver={pointerOver}
             onPointerOut={pointerOut}
+            alt=""
             {...props}
         >
             <bentPlaneGeometry args={[0.1, 1, 1, 20, 20]} />

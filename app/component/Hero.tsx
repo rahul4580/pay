@@ -1,10 +1,14 @@
 "use client"
 
 import React, { useEffect, useRef } from 'react';
+import Link from 'next/link';
 import { gsap } from 'gsap';
+import { useAuth, SignInButton } from '@clerk/nextjs';
+
 import Magnet from '../../components/Magnet';
 
 const Hero = () => {
+    const { isSignedIn } = useAuth();
     const containerRef = useRef<HTMLDivElement>(null);
     const titleRef = useRef<HTMLHeadingElement>(null);
     const subtitleRef = useRef<HTMLParagraphElement>(null);
@@ -75,7 +79,7 @@ const Hero = () => {
     return (
         <section
             ref={containerRef}
-            className="relative w-full h-[100vh] flex flex-col items-center justify-center overflow-hidden bg-[#050505] text-white"
+            className="relative w-full h-screen flex flex-col items-center justify-center overflow-hidden bg-[#050505] text-white"
         >
             {/* Background Rays */}
             <div ref={raysRef} className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -106,15 +110,11 @@ const Hero = () => {
 
             {/* Hero Content */}
             <div className="relative z-10 text-center px-4 max-w-6xl">
-                <div className="hero-parallax">
-                    <span className="inline-block px-4 py-1.5 mb-6 text-sm font-medium tracking-wider text-blue-400 uppercase border border-blue-400/30 rounded-full bg-blue-400/10">
-                        Next Gen Fintech
-                    </span>
-                </div>
+
 
                 <h1
                     ref={titleRef}
-                    className="hero-parallax text-7xl md:text-[10rem] font-bold tracking-tighter mb-8 leading-[0.85] bg-gradient-to-b from-white via-white to-white/20 bg-clip-text text-transparent"
+                    className="hero-parallax text-7xl md:text-[10rem] font-bold tracking-tighter mb-8 leading-[0.85] bg-linear-to-b from-white via-white to-white/20 bg-clip-text text-transparent"
                 >
                     FUTURE<br />PAYMENTS
                 </h1>
@@ -129,22 +129,38 @@ const Hero = () => {
 
                 <div className="hero-parallax cta-btn flex justify-center gap-6">
                     <Magnet padding={50} disabled={false} magnetStrength={30}>
-                        <button className="group relative px-10 py-5 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
-                            <span className="relative z-10 flex items-center gap-2">
-                                Launch App
-                                <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                                </svg>
-                            </span>
-                            <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
-                        </button>
+                        {isSignedIn ? (
+                            <Link href="/pay-about">
+                                <button className="group relative px-10 py-5 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                                    <span className="relative z-10 flex items-center gap-2">
+                                        Start Now
+                                        <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                        </svg>
+                                    </span>
+                                    <div className="absolute inset-0 bg-linear-to-r from-blue-500/20 to-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                            </Link>
+                        ) : (
+                            <SignInButton mode="modal">
+                                <button className="group relative px-10 py-5 bg-white text-black font-bold rounded-full transition-all duration-300 hover:scale-105 active:scale-95 shadow-[0_0_30px_rgba(255,255,255,0.2)]">
+                                    <span className="relative z-10 flex items-center gap-2">
+                                        Start Now
+                                        <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
+                                        </svg>
+                                    </span>
+                                    <div className="absolute inset-0 bg-linear-to-r from-blue-500/20 to-purple-500/20 rounded-full opacity-0 group-hover:opacity-100 transition-opacity" />
+                                </button>
+                            </SignInButton>
+                        )}
                     </Magnet>
                 </div>
             </div>
 
             {/* Scroll Indicator */}
             <div className="absolute bottom-12 left-1/2 -translate-x-1/2 opacity-40">
-                <div className="w-[1px] h-24 bg-gradient-to-b from-transparent via-white to-transparent" />
+                <div className="w-px h-24 bg-linear-to-b from-transparent via-white to-transparent" />
             </div>
 
             <style jsx>{`
